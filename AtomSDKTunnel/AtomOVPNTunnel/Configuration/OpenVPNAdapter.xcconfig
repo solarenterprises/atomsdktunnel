@@ -1,0 +1,6 @@
+MODULEMAP_FILE = Sources/AtomOVPNTunnel/module.modulemap
+GCC_PREPROCESSOR_DEFINITIONS = $(inherited) USE_ASIO
+GCC_WARN_64_TO_32_BIT_CONVERSION = NO
+ENABLE_BITCODE = YES
+OTHER_CFLAGS[sdk=iphoneos*] = $(inherited) -fembed-bitcode -Wno-error=unused-command-line-argument
+PRODUCT_BUNDLE_IDENTIFIER = com.atom.openvpn.adapter

@@ -1,0 +1,7 @@
+{
+  "macosx": {
+    "label": "macOS",
+    "scheme": "LZ4",
+    "destination": "generic/platform=macOS"
+  }
+}

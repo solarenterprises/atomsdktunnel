@@ -1,0 +1,4 @@
+module AtomSDKTunnel {
+    header "/Users/muneebsiddique/Work/SourceCode/Atom/ios-macos-tunnel-sdk/AtomSDKTunnel/.build/arm64-apple-macosx/debug/AtomSDKTunnel.build/AtomSDKTunnel-Swift.h"
+    requires objc
+}

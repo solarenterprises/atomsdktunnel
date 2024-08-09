@@ -1,0 +1,4 @@
+module OpenVPNAdapter {
+    umbrella "/Users/munib.ahmed/Desktop/Work/Office/SourceCode/OpenVPN-Obfuscation/Experiment/OpenVPNAdapter-master/Sources/OpenVPNAdapter/include"
+    export *
+}

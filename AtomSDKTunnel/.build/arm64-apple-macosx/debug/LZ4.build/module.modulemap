@@ -1,0 +1,4 @@
+module LZ4 {
+    umbrella header "/Users/muneebsiddique/Work/SourceCode/Atom/ios-macos-tunnel-sdk/AtomSDKTunnel/AtomOVPNTunnel/Sources/LZ4/include/LZ4.h"
+    export *
+}

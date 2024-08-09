@@ -1,0 +1,4 @@
+module LZ4 {
+    umbrella header "/Users/munib.ahmed/Desktop/Work/Office/SourceCode/OpenVPN-Obfuscation/Experiment/OpenVPNAdapter-master/Sources/LZ4/include/LZ4.h"
+    export *
+}

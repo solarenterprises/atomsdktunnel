@@ -1,0 +1,4 @@
+module mbedTLS {
+    umbrella "/Users/munib.ahmed/Desktop/Work/Office/SourceCode/OpenVPN-Obfuscation/Experiment/OpenVPNAdapter-master/Sources/mbedTLS/include"
+    export *
+}

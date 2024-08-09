@@ -1,0 +1,4 @@
+module mbedTLS {
+    umbrella "/Users/muneebsiddique/Work/SourceCode/Atom/ios-macos-tunnel-sdk/AtomSDKTunnel/AtomOVPNTunnel/Sources/mbedTLS/include"
+    export *
+}

@@ -1,0 +1,4 @@
+module AtomSDKTunnel {
+    umbrella "/Users/munib.ahmed/Desktop/Work/Office/SourceCode/OpenVPN-Obfuscation/Experiment/OpenVPNAdapter-master/Sources/AtomSDKTunnel/include"
+    export *
+}

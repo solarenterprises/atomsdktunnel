@@ -1,0 +1,4 @@
+module OpenVPNClient {
+    umbrella "/Users/muneebsiddique/Work/SourceCode/Atom/ios-macos-tunnel-sdk/AtomSDKTunnel/AtomOVPNTunnel/Sources/OpenVPNClient/include"
+    export *
+}
