@@ -16,7 +16,7 @@ let package = Package(
             targets: ["AtomSDKTunnel"]),
     ],
     dependencies: [
-        .package(path: "../AtomSDKTunnel/AtomOVPNTunnel")
+        .package(path: "AtomOVPNTunnel")
     ],
     targets: [
         .target(
