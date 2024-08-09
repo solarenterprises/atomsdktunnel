@@ -1,4 +1,0 @@
-module OpenVPNClient {
-    umbrella "/Users/munib.ahmed/Desktop/Work/Office/SourceCode/OpenVPN-Obfuscation/Experiment/OpenVPNAdapter-master/Sources/OpenVPNClient/include"
-    export *
-}
