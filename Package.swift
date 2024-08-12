@@ -11,30 +11,30 @@ let package = Package(
         .tvOS(.v17)
     ],
     products: [
-//        .library(
-//            name: "AtomSDKTunnel",
-//            targets: ["AtomSDKTunnel"]
-//        ),
+        .library(
+            name: "AtomSDKTunnel",
+            targets: ["AtomSDKTunnel"]
+        ),
         //        .library(
         //            name: "AtomOVPNTunnel",
         //            type: .static,
         //            targets: ["AtomOVPNTunnel"]),
-        .library(
-            name: "AtomSDKTunnel",
-            type: .static,
-            targets: ["AtomOVPNTunnel"]
-        ),
+        //        .library(
+        //            name: "AtomSDKTunnel",
+        //            type: .static,
+        //            targets: ["AtomOVPNTunnel"]
+        //        ),
     ],
     dependencies: [
     ],
     targets: [
-//        .target(
-//            name: "AtomSDKTunnel",
-//            dependencies: ["AtomOVPNTunnel"],
-//            linkerSettings: [
-//                .linkedFramework("SystemConfiguration"),
-//                .linkedFramework("UIKit", .when(platforms: [.iOS, .tvOS])),
-//            ]),
+        .target(
+            name: "AtomSDKTunnel",
+            dependencies: ["AtomOVPNTunnel"],
+            linkerSettings: [
+                .linkedFramework("SystemConfiguration"),
+                .linkedFramework("UIKit", .when(platforms: [.iOS, .tvOS])),
+            ]),
         .target(
             name: "AtomOVPNTunnel",
             dependencies: [
