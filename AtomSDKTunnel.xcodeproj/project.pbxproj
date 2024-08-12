@@ -21,10 +21,12 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		303C42B52C6A42F800A0A711 /* AtomPacketTunnelProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 303C42B22C6A42F800A0A711 /* AtomPacketTunnelProvider.swift */; };
+		303C42B62C6A42F800A0A711 /* AtomPacketTunnelProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 303C42B22C6A42F800A0A711 /* AtomPacketTunnelProvider.swift */; };
+		303C42B72C6A42F800A0A711 /* AtomSDKTunnel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 303C42B32C6A42F800A0A711 /* AtomSDKTunnel.swift */; };
+		303C42B82C6A42F800A0A711 /* AtomSDKTunnel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 303C42B32C6A42F800A0A711 /* AtomSDKTunnel.swift */; };
 		8C5A76761ED95A50004F87A2 /* AtomSDKTunnel.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C5A76751ED95A50004F87A2 /* AtomSDKTunnel.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8C5A76791ED95B67004F87A2 /* AtomSDKTunnel.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C5A76751ED95A50004F87A2 /* AtomSDKTunnel.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8C5A767B1ED95EE3004F87A2 /* AtomPacketTunnelProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5A767A1ED95EE3004F87A2 /* AtomPacketTunnelProvider.swift */; };
-		8C5A767E1ED95EE3004F87A2 /* AtomPacketTunnelProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5A767A1ED95EE3004F87A2 /* AtomPacketTunnelProvider.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -74,6 +76,8 @@
 
 /* Begin PBXFileReference section */
 		284BDA1327E8A45100C68070 /* AtomOVPNTunnel.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AtomOVPNTunnel.xcodeproj; path = AtomOVPNTunnel/AtomOVPNTunnel.xcodeproj; sourceTree = "<group>"; };
+		303C42B22C6A42F800A0A711 /* AtomPacketTunnelProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AtomPacketTunnelProvider.swift; sourceTree = "<group>"; };
+		303C42B32C6A42F800A0A711 /* AtomSDKTunnel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AtomSDKTunnel.swift; sourceTree = "<group>"; };
 		3C7123F42AD55C8C00E1AB05 /* xcframework.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = xcframework.sh; sourceTree = "<group>"; };
 		3CBDF4DD2AD431F5004D80EA /* AtomSDKTunnel iOS copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "AtomSDKTunnel iOS copy-Info.plist"; path = "/Users/muneebsiddique/Work/backup/SourceCode/Atom/ios-macos-tunnel-sdk/AtomSDKTunnel/AtomSDKTunnel iOS copy-Info.plist"; sourceTree = "<absolute>"; };
 		8C0968781ED8C64500CC19F2 /* AtomSDKTunnel.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AtomSDKTunnel.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -83,7 +87,6 @@
 		8C0968AB1ED8D80300CC19F2 /* Info-tvOS.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-tvOS.plist"; sourceTree = "<group>"; };
 		8C0968AC1ED8D80300CC19F2 /* Info-watchOS.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-watchOS.plist"; sourceTree = "<group>"; };
 		8C5A76751ED95A50004F87A2 /* AtomSDKTunnel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AtomSDKTunnel.h; sourceTree = "<group>"; };
-		8C5A767A1ED95EE3004F87A2 /* AtomPacketTunnelProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AtomPacketTunnelProvider.swift; sourceTree = "<group>"; };
 		8C5A76811ED963E1004F87A2 /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		B95D72C827E9DA890089CF11 /* AtomSDKTunnel.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = AtomSDKTunnel.podspec; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -117,6 +120,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		303C42B42C6A42F800A0A711 /* AtomSDKTunnel */ = {
+			isa = PBXGroup;
+			children = (
+				303C42B22C6A42F800A0A711 /* AtomPacketTunnelProvider.swift */,
+				303C42B32C6A42F800A0A711 /* AtomSDKTunnel.swift */,
+			);
+			path = AtomSDKTunnel;
+			sourceTree = "<group>";
+		};
 		8C09686C1ED8C3A200CC19F2 = {
 			isa = PBXGroup;
 			children = (
@@ -142,7 +154,7 @@
 		8C0968A81ED8D24F00CC19F2 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				8C5A767A1ED95EE3004F87A2 /* AtomPacketTunnelProvider.swift */,
+				303C42B42C6A42F800A0A711 /* AtomSDKTunnel */,
 				8C5A76751ED95A50004F87A2 /* AtomSDKTunnel.h */,
 				8C0968A91ED8D80300CC19F2 /* Info-iOS.plist */,
 				8C0968AA1ED8D80300CC19F2 /* Info-macOS.plist */,
@@ -334,7 +346,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8C5A767B1ED95EE3004F87A2 /* AtomPacketTunnelProvider.swift in Sources */,
+				303C42B52C6A42F800A0A711 /* AtomPacketTunnelProvider.swift in Sources */,
+				303C42B72C6A42F800A0A711 /* AtomSDKTunnel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -342,7 +355,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8C5A767E1ED95EE3004F87A2 /* AtomPacketTunnelProvider.swift in Sources */,
+				303C42B62C6A42F800A0A711 /* AtomPacketTunnelProvider.swift in Sources */,
+				303C42B82C6A42F800A0A711 /* AtomSDKTunnel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
