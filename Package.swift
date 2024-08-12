@@ -15,15 +15,6 @@ let package = Package(
             name: "AtomSDKTunnel",
             targets: ["AtomSDKTunnel"]
         ),
-        //        .library(
-        //            name: "AtomOVPNTunnel",
-        //            type: .static,
-        //            targets: ["AtomOVPNTunnel"]),
-        //        .library(
-        //            name: "AtomSDKTunnel",
-        //            type: .static,
-        //            targets: ["AtomOVPNTunnel"]
-        //        ),
     ],
     dependencies: [
     ],
