@@ -1,0 +1,4 @@
+GCC_PREPROCESSOR_DEFINITIONS = $(inherited) XXH_NAMESPACE=LZ4_
+ENABLE_BITCODE = YES
+OTHER_CFLAGS[sdk=iphoneos*] = $(inherited) -fembed-bitcode -Wno-error=unused-command-line-argument
+PRODUCT_BUNDLE_IDENTIFIER = com.atom.lz4
