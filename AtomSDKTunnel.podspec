@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
 spec.name         = "AtomSDKTunnel"
-spec.version      = "4.0.0-beta02"
+spec.version      = "4.0.0"
 spec.summary      = "OPENVPN Client AtomSDKTunnel work with AtomSDK"
 
 # This description is used to generate tags and improve search results.
@@ -54,8 +54,8 @@ spec.author             = { "Atom By Secure" => "developer@atomapi.com" }
 # spec.watchos.deployment_target = "2.0"
 # spec.tvos.deployment_target = "9.0"
 
-spec.ios.deployment_target = "11.0"
-spec.osx.deployment_target = "10.13"
+spec.ios.deployment_target = "12.0"
+spec.osx.deployment_target = "10.15"
 spec.tvos.deployment_target = "17.0"
 
 
@@ -69,7 +69,7 @@ spec.tvos.deployment_target = "17.0"
 #spec.source            = { :http => 'https://secure.com/atom/downloads/sdk/ios/5.0.3/AtomSDKTunnel.zip' }
 #spec.source            = { :http => 'file:' + __dir__ + '/build/AtomSDKTunnel/AtomSDKTunnel.zip' }
 
-spec.source            = { :http => 'https://sdk-prod-a230-v1.s3.fastoverrack.com/sdk/ios/atomsdk/tunnel/4.0.0/AtomSDKTunnel-beta02.zip' }
+spec.source            = { :http => 'https://sdk-prod-a230-v1.s3.fastoverrack.com/sdk/ios/atomsdk/tunnel/4.0.0/AtomSDKTunnel.zip' }
 spec.vendored_frameworks = 'AtomSDKTunnel.xcframework', 'AtomOVPNTunnel.xcframework',
                             'OpenVPNClient.xcframework', 'LZ4.xcframework', 'mbedTLS.xcframework'
 

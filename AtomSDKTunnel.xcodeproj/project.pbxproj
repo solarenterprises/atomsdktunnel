@@ -78,8 +78,9 @@
 		284BDA1327E8A45100C68070 /* AtomOVPNTunnel.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AtomOVPNTunnel.xcodeproj; path = AtomOVPNTunnel/AtomOVPNTunnel.xcodeproj; sourceTree = "<group>"; };
 		303C42B22C6A42F800A0A711 /* AtomPacketTunnelProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AtomPacketTunnelProvider.swift; sourceTree = "<group>"; };
 		303C42B32C6A42F800A0A711 /* AtomSDKTunnel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AtomSDKTunnel.swift; sourceTree = "<group>"; };
+		303C42D22C6B422600A0A711 /* CHANGELOG.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG.md; sourceTree = "<group>"; };
+		303C42D72C6B425E00A0A711 /* LICENSE.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
 		3C7123F42AD55C8C00E1AB05 /* xcframework.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = xcframework.sh; sourceTree = "<group>"; };
-		3CBDF4DD2AD431F5004D80EA /* AtomSDKTunnel iOS copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "AtomSDKTunnel iOS copy-Info.plist"; path = "/Users/muneebsiddique/Work/backup/SourceCode/Atom/ios-macos-tunnel-sdk/AtomSDKTunnel/AtomSDKTunnel iOS copy-Info.plist"; sourceTree = "<absolute>"; };
 		8C0968781ED8C64500CC19F2 /* AtomSDKTunnel.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AtomSDKTunnel.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C0968A01ED8CE5500CC19F2 /* AtomSDKTunnel.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AtomSDKTunnel.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C0968A91ED8D80300CC19F2 /* Info-iOS.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-iOS.plist"; sourceTree = "<group>"; };
@@ -132,13 +133,14 @@
 		8C09686C1ED8C3A200CC19F2 = {
 			isa = PBXGroup;
 			children = (
-				3C7123F42AD55C8C00E1AB05 /* xcframework.sh */,
+				303C42D22C6B422600A0A711 /* CHANGELOG.md */,
 				B95D72C827E9DA890089CF11 /* AtomSDKTunnel.podspec */,
-				284BDA1327E8A45100C68070 /* AtomOVPNTunnel.xcodeproj */,
+				3C7123F42AD55C8C00E1AB05 /* xcframework.sh */,
 				8C5A76811ED963E1004F87A2 /* Package.swift */,
-				8C0968A81ED8D24F00CC19F2 /* Sources */,
+				303C42D72C6B425E00A0A711 /* LICENSE.txt */,
+				284BDA1327E8A45100C68070 /* AtomOVPNTunnel.xcodeproj */,
 				8C0968791ED8C64500CC19F2 /* Products */,
-				3CBDF4DD2AD431F5004D80EA /* AtomSDKTunnel iOS copy-Info.plist */,
+				8C0968A81ED8D24F00CC19F2 /* Sources */,
 			);
 			sourceTree = "<group>";
 		};
@@ -497,7 +499,7 @@
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 20;
+				CURRENT_PROJECT_VERSION = 200;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -574,7 +576,7 @@
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 20;
+				CURRENT_PROJECT_VERSION = 200;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -645,7 +647,7 @@
 				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 20;
+				CURRENT_PROJECT_VERSION = 200;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -675,7 +677,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				MARKETING_VERSION = 4.0.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -718,7 +720,7 @@
 				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 20;
+				CURRENT_PROJECT_VERSION = 200;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -742,7 +744,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				MARKETING_VERSION = 4.0.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.atom.$(PROJECT_NAME)";
