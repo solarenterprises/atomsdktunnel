@@ -97,11 +97,14 @@ open class AtomPacketTunnelProvider : NEPacketTunnelProvider {
             return
         }
         
-        vpnReachability.startTracking { [weak self] status in
+        // Checking reachability. In some cases after switching from cellular to
+        // WiFi the adapter still uses cellular data. Changing reachability forces
+        // reconnection so the adapter will use actual connection.
+        /*vpnReachability.startTracking { [weak self] status in
             if status == .reachableViaWiFi {
                 self?.vpnAdapter.reconnect(afterTimeInterval: 5)
             }
-        }
+        }*/
         
         startHandler = completionHandler
         vpnAdapter.connect(using: packetFlow)
