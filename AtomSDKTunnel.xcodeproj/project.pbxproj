@@ -21,10 +21,14 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		3015954E2CFA2A19003D21C8 /* AtomSDKTunnelDarwinNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3015954D2CFA2A19003D21C8 /* AtomSDKTunnelDarwinNotificationManager.swift */; };
+		3015954F2CFA2A19003D21C8 /* AtomSDKTunnelDarwinNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3015954D2CFA2A19003D21C8 /* AtomSDKTunnelDarwinNotificationManager.swift */; };
 		303C42B52C6A42F800A0A711 /* AtomPacketTunnelProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 303C42B22C6A42F800A0A711 /* AtomPacketTunnelProvider.swift */; };
 		303C42B62C6A42F800A0A711 /* AtomPacketTunnelProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 303C42B22C6A42F800A0A711 /* AtomPacketTunnelProvider.swift */; };
 		303C42B72C6A42F800A0A711 /* AtomSDKTunnel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 303C42B32C6A42F800A0A711 /* AtomSDKTunnel.swift */; };
 		303C42B82C6A42F800A0A711 /* AtomSDKTunnel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 303C42B32C6A42F800A0A711 /* AtomSDKTunnel.swift */; };
+		30DF45302CF47E1C00532F29 /* NEPacketTunnelProvider+VPNStateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30DF452F2CF47E1C00532F29 /* NEPacketTunnelProvider+VPNStateManager.swift */; };
+		30DF45312CF47E1C00532F29 /* NEPacketTunnelProvider+VPNStateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30DF452F2CF47E1C00532F29 /* NEPacketTunnelProvider+VPNStateManager.swift */; };
 		8C5A76761ED95A50004F87A2 /* AtomSDKTunnel.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C5A76751ED95A50004F87A2 /* AtomSDKTunnel.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8C5A76791ED95B67004F87A2 /* AtomSDKTunnel.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C5A76751ED95A50004F87A2 /* AtomSDKTunnel.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
@@ -76,10 +80,12 @@
 
 /* Begin PBXFileReference section */
 		284BDA1327E8A45100C68070 /* AtomOVPNTunnel.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AtomOVPNTunnel.xcodeproj; path = AtomOVPNTunnel/AtomOVPNTunnel.xcodeproj; sourceTree = "<group>"; };
+		3015954D2CFA2A19003D21C8 /* AtomSDKTunnelDarwinNotificationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AtomSDKTunnelDarwinNotificationManager.swift; sourceTree = "<group>"; };
 		303C42B22C6A42F800A0A711 /* AtomPacketTunnelProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AtomPacketTunnelProvider.swift; sourceTree = "<group>"; };
 		303C42B32C6A42F800A0A711 /* AtomSDKTunnel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AtomSDKTunnel.swift; sourceTree = "<group>"; };
 		303C42D22C6B422600A0A711 /* CHANGELOG.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG.md; sourceTree = "<group>"; };
 		303C42D72C6B425E00A0A711 /* LICENSE.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
+		30DF452F2CF47E1C00532F29 /* NEPacketTunnelProvider+VPNStateManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NEPacketTunnelProvider+VPNStateManager.swift"; sourceTree = "<group>"; };
 		3C7123F42AD55C8C00E1AB05 /* xcframework.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = xcframework.sh; sourceTree = "<group>"; };
 		8C0968781ED8C64500CC19F2 /* AtomSDKTunnel.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AtomSDKTunnel.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C0968A01ED8CE5500CC19F2 /* AtomSDKTunnel.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AtomSDKTunnel.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -126,6 +132,8 @@
 			children = (
 				303C42B22C6A42F800A0A711 /* AtomPacketTunnelProvider.swift */,
 				303C42B32C6A42F800A0A711 /* AtomSDKTunnel.swift */,
+				3015954D2CFA2A19003D21C8 /* AtomSDKTunnelDarwinNotificationManager.swift */,
+				30DF452F2CF47E1C00532F29 /* NEPacketTunnelProvider+VPNStateManager.swift */,
 			);
 			path = AtomSDKTunnel;
 			sourceTree = "<group>";
@@ -233,6 +241,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 1330;
+				ORGANIZATIONNAME = AtomSDK;
 				TargetAttributes = {
 					3C74EECF2AF0ABCD00090A62 = {
 						CreatedOnToolsVersion = 15.0.1;
@@ -348,6 +357,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				30DF45302CF47E1C00532F29 /* NEPacketTunnelProvider+VPNStateManager.swift in Sources */,
+				3015954E2CFA2A19003D21C8 /* AtomSDKTunnelDarwinNotificationManager.swift in Sources */,
 				303C42B52C6A42F800A0A711 /* AtomPacketTunnelProvider.swift in Sources */,
 				303C42B72C6A42F800A0A711 /* AtomSDKTunnel.swift in Sources */,
 			);
@@ -357,6 +368,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				30DF45312CF47E1C00532F29 /* NEPacketTunnelProvider+VPNStateManager.swift in Sources */,
+				3015954F2CFA2A19003D21C8 /* AtomSDKTunnelDarwinNotificationManager.swift in Sources */,
 				303C42B62C6A42F800A0A711 /* AtomPacketTunnelProvider.swift in Sources */,
 				303C42B82C6A42F800A0A711 /* AtomSDKTunnel.swift in Sources */,
 			);
