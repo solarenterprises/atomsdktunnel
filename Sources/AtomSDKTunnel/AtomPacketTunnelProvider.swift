@@ -127,7 +127,7 @@ open class AtomPacketTunnelProvider : NEPacketTunnelProvider {
                 let key2 = json["time"]
                 
                 guard let action = key1 as? String else {
-                    completionHandler?("error".data(using: String.Encoding.utf8))
+                    completionHandler?("error|No Action Received".data(using: String.Encoding.utf8))
                     return
                 }
                 
@@ -138,20 +138,25 @@ open class AtomPacketTunnelProvider : NEPacketTunnelProvider {
                         // Don't auto resume.
                         pauseVPN(for: nil)
                     }
-                    completionHandler?("PAUSED".data(using: String.Encoding.utf8))
+                    completionHandler?("success|paused".data(using: String.Encoding.utf8))
                 } else if action.elementsEqual("RESUME") {
-                    resumeVPN()
-                    completionHandler?("RESUMED".data(using: String.Encoding.utf8))
+                    resumeVPN(manualResume: true, completionHandler: { response in
+                        if let response = response, let responseError = response["error"] {
+                            completionHandler?("error|\(responseError)".data(using: String.Encoding.utf8))
+                        } else {
+                            completionHandler?("success|resumed".data(using: String.Encoding.utf8))
+                        }
+                    })
                 } else if action.elementsEqual("VPNSTATUS") {
                     completionHandler?("\(vpnStatusString)".data(using: String.Encoding.utf8))
                 } else {
-                    completionHandler?("INVALID ACTION".data(using: String.Encoding.utf8))
+                    completionHandler?("error|Invalid Action".data(using: String.Encoding.utf8))
                 }
             } else {
-                completionHandler?("INVALID JSON FORMAT".data(using: String.Encoding.utf8))
+                completionHandler?("error|Invalid JSON Format".data(using: String.Encoding.utf8))
             }
         } catch {
-            completionHandler?("CATCH JSON ERROR: \(error.localizedDescription)".data(using: String.Encoding.utf8))
+            completionHandler?("error|Catch JSON Error: \(error.localizedDescription)".data(using: String.Encoding.utf8))
         }
     }
     open override func sleep(completionHandler: @escaping () -> Void) {
@@ -164,7 +169,7 @@ open class AtomPacketTunnelProvider : NEPacketTunnelProvider {
     
     private func pauseVPN(for interval: TimeInterval?) {
         guard vpnStateManager.canPause else {
-            os_log("VPN is already paused", log: log, type: .info)
+            os_log("VPN is already paused", log: log, type: .error)
             return
         }
         
@@ -177,26 +182,43 @@ open class AtomPacketTunnelProvider : NEPacketTunnelProvider {
         }
     }
     
-    private func resumeVPN() {
+    private func resumeVPN(manualResume: Bool = true, completionHandler: (([String : Any]?) -> Void)? = nil) {
+        var dictToSend = [String : Any]()
         guard vpnStateManager.canResume else {
-            os_log("VPN is not paused; cannot resume", log: log, type: .info)
+            let error = "VPN is not paused, cannot resume"
+            os_log("%@", log: log, type: .error, error)
+            dictToSend["error"] = error
+            if (manualResume) {
+                completionHandler?(dictToSend)
+            } else {
+                AtomSDKTunnelDarwinNotificationManager.shared.postNotification(name: "RESUMED", userInfo: dictToSend)
+            }
             return
         }
         
         os_log("Resuming VPN", log: log, type: .info)
         
-        vpnStateManager.resumeVPN { [weak self] in
+        vpnStateManager.resumeVPN { [weak self] error in
             guard let self = self else { return }
             
-            os_log("Resumed", log: self.log, type: .info)
-            AtomSDKTunnelDarwinNotificationManager.shared.postNotification(name: "RESUMED")
-            
-            guard let startHandler = startHandler else {
-                os_log("I AM Resumed but in else", log: self.log, type: .info)
-                return
+            if let error = error {
+                let errorToSend = "ResumeVPN error: \(error)"
+                os_log("%@", log: log, type: .error, errorToSend)
+                dictToSend["error"] = errorToSend
+                if (manualResume) {
+                    completionHandler?(dictToSend)
+                } else {
+                    AtomSDKTunnelDarwinNotificationManager.shared.postNotification(name: "RESUMED", userInfo: dictToSend)
+                }
+            } else {
+                os_log("Resumed", log: self.log, type: .info)
+                dictToSend["error"] = nil
+                if (manualResume) {
+                    completionHandler?(dictToSend)
+                } else {
+                    AtomSDKTunnelDarwinNotificationManager.shared.postNotification(name: "RESUMED", userInfo: dictToSend)
+                }
             }
-            startHandler(nil)
-            //self.startHandler = nil
         }
     }
     
@@ -299,6 +321,6 @@ extension AtomPacketTunnelProvider : OpenVPNAdapterDelegate {
 
 extension AtomPacketTunnelProvider : VPNStateManagerDelegate {
     func didTriggerAutoResume() {
-        self.resumeVPN()
+        self.resumeVPN(manualResume: false)
     }
 }

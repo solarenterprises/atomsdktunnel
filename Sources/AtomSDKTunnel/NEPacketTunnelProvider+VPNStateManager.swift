@@ -89,7 +89,7 @@ extension NEPacketTunnelProvider {
         }
         
         /// Resumes the VPN manually
-        func resumeVPN(completion: @escaping () -> Void) {
+        func resumeVPN(completion: @escaping (_ error: String?) -> Void) {
             // Update state to resumed
             stateQueue.sync(flags: .barrier) {
                 isPaused = false
@@ -102,14 +102,14 @@ extension NEPacketTunnelProvider {
             // Retrieve stored settings and resume VPN using tunnelProvider reference
             tunnelProvider?.setTunnelNetworkSettings(tunnelProvider?.getStoredTunnelNetworkSettings()) { error in
                 if let error = error {
-                    os_log("Failed to resume VPN: %{public}@", type: .error, error.localizedDescription)
+                    let errorToSend = "Failed to resume VPN with error: \(error.localizedDescription)"
+                    os_log("%{public}@", type: .error, errorToSend)
+                    completion(errorToSend)
                 } else {
                     os_log("VPN resumed successfully", type: .info)
+                    completion(nil)
                 }
             }
-            
-            // Call completion handler
-            completion()
         }
         
         // MARK: - Private Methods

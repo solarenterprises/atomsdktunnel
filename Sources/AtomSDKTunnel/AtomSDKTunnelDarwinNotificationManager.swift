@@ -15,16 +15,24 @@ import Foundation
     private override init() {}
     
     // 1
-    private var callbacks: [String: () -> Void] = [:]
+    private var callbacks: [String: ([String : Any]?) -> Void] = [:]
     
     // Method to post a Darwin notification
-    @objc func postNotification(name: String) {
+    @objc func postNotification(name: String, userInfo: [String : Any]) {
         let notificationCenter = CFNotificationCenterGetDarwinNotifyCenter()
-        CFNotificationCenterPostNotification(notificationCenter, CFNotificationName(name as CFString), nil, nil, true)
+        
+        // Convert dictionary to CFDictionary
+        let cfUserInfo: CFDictionary? = userInfo as CFDictionary?
+        
+        CFNotificationCenterPostNotification(notificationCenter,
+                                             CFNotificationName(name as CFString),
+                                             nil,
+                                             cfUserInfo,
+                                             true)
     }
     
     // 2
-    @objc func startObserving(name: String, callback: @escaping () -> Void) {
+    @objc func startObserving(name: String, callback: @escaping ([String : Any]?) -> Void) {
         callbacks[name] = callback
         
         let notificationCenter = CFNotificationCenterGetDarwinNotifyCenter()
@@ -45,12 +53,16 @@ import Foundation
     }
     
     // 4
-    private static let notificationCallback: CFNotificationCallback = { center, observer, name, _, _ in
+    private static let notificationCallback: CFNotificationCallback = { center, observer, name, _, userInfo in
         guard let observer = observer else { return }
         let manager = Unmanaged<AtomSDKTunnelDarwinNotificationManager>.fromOpaque(observer).takeUnretainedValue()
         
-        if let name = name?.rawValue as String?, let callback = manager.callbacks[name] {
-            callback()
+        if let name = name?.rawValue as String?,
+           let callback = manager.callbacks[name] {
+            // Convert CFDictionary to Swift Dictionary
+            let swiftUserInfo = userInfo as? [String: Any]
+            
+            callback(swiftUserInfo)
         }
     }
 }
