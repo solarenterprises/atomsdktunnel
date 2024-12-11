@@ -135,8 +135,8 @@ open class AtomPacketTunnelProvider : NEPacketTunnelProvider {
                     if let time = key2 as? Double, time != 0.0 {
                         pauseVPN(for: time)
                     } else {
-                        // Don't auto resume.
-                        pauseVPN(for: nil)
+                        // Don't auto resume, this will be developed later on when manual Pause will be available from AtomSDK.
+                        //pauseVPN(for: nil)
                     }
                     completionHandler?("success|paused".data(using: String.Encoding.utf8))
                 } else if action.elementsEqual("RESUME") {
