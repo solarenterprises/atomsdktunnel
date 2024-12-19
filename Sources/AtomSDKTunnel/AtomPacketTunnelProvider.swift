@@ -178,7 +178,7 @@ open class AtomPacketTunnelProvider : NEPacketTunnelProvider {
         vpnStateManager.pauseVPN(interval: interval ?? 0) { [weak self] in
             guard let self = self else { return }
             os_log("Paused", log: self.log, type: .info)
-            
+            vpnStatusString = "PAUSE"
         }
     }
     
@@ -199,6 +199,7 @@ open class AtomPacketTunnelProvider : NEPacketTunnelProvider {
         os_log("Resuming VPN", log: log, type: .info)
         
         vpnStateManager.resumeVPN { [weak self] error in
+            self?.vpnStatusString = "CONNECTED"
             guard let self = self else { return }
             
             if let error = error {
