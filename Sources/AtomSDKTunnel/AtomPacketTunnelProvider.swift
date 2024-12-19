@@ -148,7 +148,7 @@ open class AtomPacketTunnelProvider : NEPacketTunnelProvider {
                         }
                     })
                 } else if action.elementsEqual("VPNSTATUS") {
-                    completionHandler?("\(vpnStatusString)".data(using: String.Encoding.utf8))
+                    completionHandler?("success|\(vpnStatusString.lowercased())".data(using: String.Encoding.utf8))
                 } else {
                     completionHandler?("error|Invalid Action".data(using: String.Encoding.utf8))
                 }
@@ -178,7 +178,7 @@ open class AtomPacketTunnelProvider : NEPacketTunnelProvider {
         vpnStateManager.pauseVPN(interval: interval ?? 0) { [weak self] in
             guard let self = self else { return }
             os_log("Paused", log: self.log, type: .info)
-            vpnStatusString = "PAUSE"
+            vpnStatusString = "PAUSED"
         }
     }
     
