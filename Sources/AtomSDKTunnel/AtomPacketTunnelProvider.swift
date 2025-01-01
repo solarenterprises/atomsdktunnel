@@ -1,10 +1,11 @@
 //
-//  AtomPacketTunnelProvider.swift
-//  AtomPacketTunnelProvider
-//
-//  Created by Atom on 27/05/2017.
-//
-//
+/*
+ * AtomPacketTunnelProvider.swift
+ * AtomSDKTunnel
+ 
+ * Created by AtomSDK on 02/12/2024.
+ * Copyright © 2024 AtomSDK. All rights reserved.
+ */
 
 import Foundation
 import AtomOVPNTunnel
@@ -25,7 +26,8 @@ open class AtomPacketTunnelProvider : NEPacketTunnelProvider {
     
     
     private var appGroup: String!
-    
+    private var vpnStateManager: VPNStateManager!
+
     let log = OSLog.init(subsystem: "com.atomsdktunnel", category: "Logging")
     
     lazy var vpnAdapter: OpenVPNAdapter = {
@@ -37,100 +39,75 @@ open class AtomPacketTunnelProvider : NEPacketTunnelProvider {
     var startHandler: ((Error?) -> Void)?
     var stopHandler: (() -> Void)?
     var uniqueID: String?
+    var vpnStatusString = ""
+    
     //  var wormhole: MMWormhole?
     override init() {
-    }
-    private func initializeDependencies(appGroup : String){
-//        for (key, value) in self.defaultshared.dictionaryRepresentation() {
-//            
-//        }
+        super.init()
         
+        // Now you can safely use self because the class is fully initialized
+        vpnStateManager = VPNStateManager(tunnelProvider: self)
     }
-    open override func startTunnel(options: [String : NSObject]? = nil, completionHandler: @escaping (Error?) -> Void) {
-        // There are many ways to provide OpenVPN settings to the tunnel provider. For instance,
-        // you can use `options` argument of `startTunnel(options:completionHandler:)` method or get
-        // settings from `protocolConfiguration.providerConfiguration` property of `NEPacketTunnelProvider`
-        // class. Also you may provide just content of a ovpn file or use key:value pairs
-        // that may be provided exclusively or in addition to file content.
-        // In our case we need providerConfiguration dictionary to retrieve content
-        // of the OpenVPN configuration file. Other options related to the tunnel
-        // provider also can be stored there.
-        guard
-            let protocolConfiguration = protocolConfiguration as? NETunnelProviderProtocol,
-            let providerConfiguration = protocolConfiguration.providerConfiguration
+    
+    // MARK: - NEPacketTunnelProvider Overrides
+    
+    open override func startTunnel(options: [String: NSObject]? = nil, completionHandler: @escaping (Error?) -> Void) {
+        
+
+        
+        guard let protocolConfiguration = protocolConfiguration as? NETunnelProviderProtocol,
+              let providerConfiguration = protocolConfiguration.providerConfiguration,
+              let ovpnFileContent = providerConfiguration["ovpn"] as? Data,
+              let appGroup = providerConfiguration["AppGroup"] as? String,
+              let credentialsData = providerConfiguration["credentials"] as? Data,
+              let credentials = NSKeyedUnarchiver.unarchiveObject(with: credentialsData) as? [String: Any],
+              let username = credentials["username"] as? String,
+              let password = credentials["password"] as? String
         else {
-            fatalError()
-        }
-        guard let ovpnFileContent: Data = providerConfiguration["ovpn"] as? Data else {
-            fatalError()
-        }
-        guard let appGroup: String = providerConfiguration["AppGroup"] as? String else {
-            fatalError()
-        }
-        guard let credentialsData = (providerConfiguration["credentials"] as? Data) else {
-            fatalError()
-        }
-        guard let credentials = NSKeyedUnarchiver.unarchiveObject(with: credentialsData) as? [String : Any] else {
-            fatalError()
-        }
-        guard let username = (credentials["username"]) as? String else {
-            fatalError()
-        }
-        guard let password = (credentials["password"]) as? String else {
-            fatalError()
+            completionHandler(OpenVPNAdapterError.configurationFailure as? Error)
+            return
         }
         
-        uniqueID = UUID().uuidString
-        initializeDependencies(appGroup: appGroup)
+        NEPacketTunnelProvider.swizzleSetTunnelNetworkSettings()
+        
+        vpnStateManager.delegate = self
+        
         let configuration = OpenVPNConfiguration()
         configuration.fileContent = ovpnFileContent
         configuration.clockTick = 1000
-       
-        
-        if let timeout = providerConfiguration["openvpnTimeout"] as? Double {
-            configuration.connectionTimeout = Int(timeout)
-        }
-        
+        configuration.connectionTimeout = providerConfiguration["openvpnTimeout"] as? Int ?? 30
         configuration.settings = ["verb": "5"]
-        configuration.disableClientCert = false
         configuration.forceCiphersuitesAESCBC = true
-        // Uncomment this line if you want to keep TUN interface active during pauses or reconnections
-        // configuration.tunPersist = true
-        // Apply OpenVPN configuration
-        let properties: OpenVPNConfigurationEvaluation
+        
         do {
-            properties = try vpnAdapter.apply(configuration: configuration)
+            try vpnAdapter.apply(configuration: configuration)
         } catch {
             completionHandler(error)
             return
         }
-        if !properties.autologin {
-            // Provide credentials if needed
-            // If your VPN configuration requires user credentials you can provide them by
-            // `protocolConfiguration.username` and `protocolConfiguration.passwordReference`
-            // properties. It is recommended to use persistent keychain reference to a keychain
-            // item containing the password.
-            let credentials = OpenVPNCredentials()
-            credentials.username = username
-            credentials.password = password
-            do {
-                try vpnAdapter.provide(credentials: credentials)
-            } catch {
-                completionHandler(error)
-                return
-            }
+        
+        let openvpnCredentials = OpenVPNCredentials()
+        openvpnCredentials.username = username
+        openvpnCredentials.password = password
+        
+        do {
+            try vpnAdapter.provide(credentials: openvpnCredentials)
+        } catch {
+            completionHandler(error)
+            return
         }
+        
         // Checking reachability. In some cases after switching from cellular to
         // WiFi the adapter still uses cellular data. Changing reachability forces
         // reconnection so the adapter will use actual connection.
-        vpnReachability.startTracking { [weak self] status in
-            guard status == .reachableViaWiFi else { return }
-            self?.vpnAdapter.reconnect(afterTimeInterval: 5)
-        }
+        /*vpnReachability.startTracking { [weak self] status in
+            if status == .reachableViaWiFi {
+                self?.vpnAdapter.reconnect(afterTimeInterval: 5)
+            }
+        }*/
+        
         startHandler = completionHandler
         vpnAdapter.connect(using: packetFlow)
-//        if let uniqueid = uniqueID {
-//        }
     }
     open override func stopTunnel(with reason: NEProviderStopReason, completionHandler: @escaping () -> Void) {
         stopHandler = completionHandler
@@ -138,16 +115,48 @@ open class AtomPacketTunnelProvider : NEPacketTunnelProvider {
             vpnReachability.stopTracking()
         }
         vpnAdapter.disconnect()
-//        if let uniqueid = uniqueID {
-//
-//        }
+        
 #if os(macOS)
         exit(0)
 #endif
     }
     open override func handleAppMessage(_ messageData: Data, completionHandler: ((Data?) -> Void)?) {
-        if let handler = completionHandler {
-            handler(messageData)
+        do {
+            if let json = try JSONSerialization.jsonObject(with: messageData, options: []) as? [String : Any] {
+                let key1 = json["action"]
+                let key2 = json["time"]
+                
+                guard let action = key1 as? String else {
+                    completionHandler?("error|No Action Received".data(using: String.Encoding.utf8))
+                    return
+                }
+                
+                if action.elementsEqual("PAUSE") {
+                    if let time = key2 as? Double, time != 0.0 {
+                        pauseVPN(for: time)
+                    } else {
+                        // Don't auto resume, this will be developed later on when manual Pause will be available from AtomSDK.
+                        //pauseVPN(for: nil)
+                    }
+                    completionHandler?("success|paused".data(using: String.Encoding.utf8))
+                } else if action.elementsEqual("RESUME") {
+                    resumeVPN(manualResume: true, completionHandler: { response in
+                        if let response = response, let responseError = response["error"] {
+                            completionHandler?("error|\(responseError)".data(using: String.Encoding.utf8))
+                        } else {
+                            completionHandler?("success|resumed".data(using: String.Encoding.utf8))
+                        }
+                    })
+                } else if action.elementsEqual("VPNSTATUS") {
+                    completionHandler?("success|\(vpnStatusString.lowercased())".data(using: String.Encoding.utf8))
+                } else {
+                    completionHandler?("error|Invalid Action".data(using: String.Encoding.utf8))
+                }
+            } else {
+                completionHandler?("error|Invalid JSON Format".data(using: String.Encoding.utf8))
+            }
+        } catch {
+            completionHandler?("error|Catch JSON Error: \(error.localizedDescription)".data(using: String.Encoding.utf8))
         }
     }
     open override func sleep(completionHandler: @escaping () -> Void) {
@@ -155,13 +164,72 @@ open class AtomPacketTunnelProvider : NEPacketTunnelProvider {
     }
     open override func wake() {
     }
+    
+    // MARK: - VPN Management
+    
+    private func pauseVPN(for interval: TimeInterval?) {
+        guard vpnStateManager.canPause else {
+            os_log("VPN is already paused", log: log, type: .error)
+            return
+        }
+        
+        os_log("Pausing VPN for %{public}.2f seconds", log: log, type: .info, interval ?? 0.0)
+        
+        vpnStateManager.pauseVPN(interval: interval ?? 0) { [weak self] in
+            guard let self = self else { return }
+            os_log("Paused", log: self.log, type: .info)
+            vpnStatusString = "PAUSED"
+        }
+    }
+    
+    private func resumeVPN(manualResume: Bool = true, completionHandler: (([String : Any]?) -> Void)? = nil) {
+        var dictToSend = [String : Any]()
+        guard vpnStateManager.canResume else {
+            let error = "VPN is not paused, cannot resume"
+            os_log("%@", log: log, type: .error, error)
+            dictToSend["error"] = error
+            if (manualResume) {
+                completionHandler?(dictToSend)
+            } else {
+                AtomSDKTunnelDarwinNotificationManager.shared.postNotification(name: "RESUMED", userInfo: dictToSend)
+            }
+            return
+        }
+        
+        os_log("Resuming VPN", log: log, type: .info)
+        
+        vpnStateManager.resumeVPN { [weak self] error in
+            self?.vpnStatusString = "CONNECTED"
+            guard let self = self else { return }
+            
+            if let error = error {
+                let errorToSend = "ResumeVPN error: \(error)"
+                os_log("%@", log: log, type: .error, errorToSend)
+                dictToSend["error"] = errorToSend
+                if (manualResume) {
+                    completionHandler?(dictToSend)
+                } else {
+                    AtomSDKTunnelDarwinNotificationManager.shared.postNotification(name: "RESUMED", userInfo: dictToSend)
+                }
+            } else {
+                os_log("Resumed", log: self.log, type: .info)
+                dictToSend["error"] = nil
+                if (manualResume) {
+                    completionHandler?(dictToSend)
+                } else {
+                    AtomSDKTunnelDarwinNotificationManager.shared.postNotification(name: "RESUMED", userInfo: dictToSend)
+                }
+            }
+        }
+    }
+    
 }
 @available(macOS 10.12, *)
 extension AtomPacketTunnelProvider : OpenVPNAdapterDelegate {
     public func openVPNAdapter(_ openVPNAdapter: OpenVPNAdapter, configureTunnelWithNetworkSettings networkSettings: NEPacketTunnelNetworkSettings?, completionHandler: @escaping (Error?) -> Void) {
         // In order to direct all DNS queries first to the VPN DNS servers before the primary DNS servers
         // send empty string to NEDNSSettings.matchDomains
-        networkSettings?.dnsSettings?.matchDomains = [""]
+        
         // Set the network settings for the current tunneling session.
         setTunnelNetworkSettings(networkSettings, completionHandler: completionHandler)
     }
@@ -187,6 +255,9 @@ extension AtomPacketTunnelProvider : OpenVPNAdapterDelegate {
     }
     public func openVPNAdapter(_ openVPNAdapter: OpenVPNAdapter, handleEvent event: OpenVPNAdapterEvent, message: String?) {
         switch event {
+        case .connecting:
+            vpnStatusString = "CONNECTING"
+            break
         case .connected:
             if reasserting {
                 reasserting = false
@@ -194,6 +265,8 @@ extension AtomPacketTunnelProvider : OpenVPNAdapterDelegate {
             guard let startHandler = startHandler else { return }
             startHandler(nil)
             self.startHandler = nil
+            vpnStatusString = "CONNECTED"
+            break
         case .disconnected:
             guard let stopHandler = stopHandler else { return }
             if vpnReachability.isTracking {
@@ -201,11 +274,35 @@ extension AtomPacketTunnelProvider : OpenVPNAdapterDelegate {
             }
             stopHandler()
             self.stopHandler = nil
+            vpnStatusString = "DISCONNECTED"
+            break
         case .reconnecting:
             reasserting = true
+            vpnStatusString = "RECONNECTING"
+            break
         case .info:
+            vpnStatusString = "INFO"
+            break
+        case .pause:
+            vpnStatusString = "PAUSE"
+            break
+        case .resume:
+            vpnStatusString = "RESUME"
+            break
+        case .resolve:
+            vpnStatusString = "RESOLVE"
+            break
+        case .wait:
+            vpnStatusString = "WAIT"
+            break
+        case .getConfig:
+            vpnStatusString = "GETCONFIG"
+            break
+        case .assignIP:
+            vpnStatusString = "ASSIGNIP"
             break
         default:
+            vpnStatusString = "DEFAULT"
             break
         }
     }
@@ -223,3 +320,8 @@ extension AtomPacketTunnelProvider : OpenVPNAdapterDelegate {
     }
 }
 
+extension AtomPacketTunnelProvider : VPNStateManagerDelegate {
+    func didTriggerAutoResume() {
+        self.resumeVPN(manualResume: false)
+    }
+}
